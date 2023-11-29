@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/cut_card_background"
+    tools:context=".log.LoginActivity"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:drawingCacheQuality="auto"
+        android:fontFamily="@font/inter_extra_bold"
+        android:gravity="center"
+        android:text="@string/witaj"
+        android:textAlignment="center"
+        android:textColor="@color/md_blue_500"
+        android:textSize="30sp"
+        app:drawableLeftCompat="@drawable/ic_heart" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:theme="@style/Theme.MaterialComponents"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
+
+        app:cardUseCompatPadding="true"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        tools:layout_editor_absoluteY="226dp">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tl_login_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/wprowad_email"
+            android:textColorHint="#757575">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/black"
+                tools:ignore="RtlSymmetry" />
+
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:theme="@style/Theme.MaterialComponents"
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
+        app:cardUseCompatPadding="true">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+           android:id="@+id/tl_login_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/wpisz_has_o"
+            android:textColorHint="#757575"
+            app:endIconMode="password_toggle"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/black"
+            app:passwordToggleContentDescription="@string/has_o"
+            app:passwordToggleDrawable="@drawable/ic_no_visibility"
+            app:passwordToggleTintMode="multiply"
+            app:endIconCheckable="true"
+            app:boxStrokeColor="@color/purple_200"
+            app:boxStrokeErrorColor="@color/md_red_900"
+            app:errorTextColor="@color/md_red_900">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:inputType="textPassword"
+                app:endIconTint="@color/colorAccent"
+                android:textColor="@color/black"
+                tools:ignore="RtlSymmetry" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <Button
+        android:id="@+id/cirLoginButton"
+        style="@style/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/loginViewsMargin"
+        android:contentDescription="@string/todo"
+        android:text="@string/zaloguj_si"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/textSingUp"
+        style="@style/parent"
+        android:text="@string/login_signup_hint"
+        android:textAlignment="center"
+        android:layout_marginTop="40dp"
+        android:textSize="15sp"
+        android:textColor="@color/primaryTextColor"
+        android:textStyle="bold"
+         />
+
+
+</LinearLayout>

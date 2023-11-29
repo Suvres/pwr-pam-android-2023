@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/blankMenuFragment">
+    <fragment
+        android:id="@+id/menuCaregiverFragment"
+        android:name="com.example.myapplication.fragments.MenuParentFragment"
+        android:label="fragment_menu_caregiver"
+        tools:layout="@layout/fragment_menu_parent" >
+
+        <action
+            android:id="@+id/action_menuCaregiverFragment_to_childrenFragment"
+            app:destination="@id/childrenFragment" />
+        <action
+            android:id="@+id/action_menuCaregiverFragment_to_newUserFragment"
+            app:destination="@id/newUserFragment" />
+        <action
+            android:id="@+id/action_menuCaregiverFragment_to_toDoCaregiver"
+            app:destination="@id/toDoCaregiver" />
+
+        <action
+            android:id="@+id/action_menuCaregiverFragment_to_childrenTasksStatusFragment"
+            app:destination="@id/childrenTasksStatusFragment" />
+        <action
+            android:id="@+id/action_menuCaregiverFragment_to_locationChildrenFragment"
+            app:destination="@id/locationChildrenFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/toDoCaregiver"
+        android:name="com.example.myapplication.fragments.ToDoCaregiverFragment"
+        android:label="toDoCaregiver"
+        tools:layout="@layout/fragment_todo_caregiver" />
+    <fragment
+        android:id="@+id/childrenFragment"
+        android:name="com.example.myapplication.fragments.ChildFragment"
+        android:label="fragment_children"
+        tools:layout="@layout/fragment_children" />
+    <fragment
+        android:id="@+id/menuChildFragment"
+        android:name="com.example.myapplication.fragments.MenuChildFragment"
+        android:label="fragment_menu_child"
+        tools:layout="@layout/fragment_menu_child" >
+        <action
+            android:id="@+id/action_menuchildFragment_to_fingerTapping"
+            app:destination="@id/fingerTapping" />
+        <action
+            android:id="@+id/action_menuchildFragment_to_memoryQuiz"
+            app:destination="@id/memoryQuiz" />
+        <action
+            android:id="@+id/action_menuchildFragment_to_wellBeingFragment"
+            app:destination="@id/wellBeingFragment" />
+        <action
+            android:id="@+id/action_menuchildFragment_to_medicineFragment"
+            app:destination="@id/medicineFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/blankMenuFragment"
+        android:name="com.example.myapplication.BlankMenuFragment"
+        android:label="fragment_blank_menu"
+        tools:layout="@layout/fragment_blank_menu" >
+        <action
+            android:id="@+id/action_blankMenuFragment_to_menuCaregiverFragment"
+            app:destination="@id/menuCaregiverFragment" />
+        <action
+            android:id="@+id/action_blankMenuFragment_to_menuchildFragment"
+            app:destination="@id/menuChildFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fingerTapping"
+        android:name="com.example.myapplication.fragments.FingerTapping"
+        android:label="fragment_finger_tapping"
+        tools:layout="@layout/fragment_finger_tapping" >
+        <action
+            android:id="@+id/action_fingerTapping_to_menuchildFragment"
+            app:destination="@id/menuChildFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/memoryQuiz"
+        android:name="com.example.myapplication.fragments.MemoryQuizFragment"
+        android:label="fragment_memory_quiz"
+        tools:layout="@layout/fragment_memory_quiz" >
+        <action
+            android:id="@+id/action_memoryQuiz_to_menuchildFragment"
+            app:destination="@id/menuChildFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newUserFragment"
+        android:name="com.example.myapplication.fragments.NewUserFragment"
+        android:label="fragment_new_user"
+        tools:layout="@layout/fragment_new_user" >
+        <action
+            android:id="@+id/action_newUserFragment_to_menuCaregiverFragment"
+            app:destination="@id/menuCaregiverFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/wellBeingFragment"
+        android:name="com.example.myapplication.fragments.WellBeingFragment"
+        android:label="fragment_well_being"
+        tools:layout="@layout/fragment_well_being" >
+        <action
+            android:id="@+id/action_wellBeingFragment_to_menuchildFragment"
+            app:destination="@id/menuChildFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/childrenTasksStatusFragment"
+        android:name="com.example.myapplication.fragments.ChildTasksStatusFragment"
+        android:label="fragment_children_tasks_status"
+        tools:layout="@layout/fragment_children_tasks_status" >
+        <action
+            android:id="@+id/action_childrenTasksStatusFragment_to_menuCaregiverFragment"
+            app:destination="@id/menuCaregiverFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationChildrenFragment"
+        android:name="com.example.myapplication.fragments.LocationChildFragment"
+        android:label="fragment_location_children"
+        tools:layout="@layout/fragment_location_child" >
+        <action
+            android:id="@+id/action_locationchildrenFragment_to_menuCaregiverFragment"
+            app:destination="@id/menuCaregiverFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/medicineFragment"
+        android:name="com.example.myapplication.fragments.MedicineFragment"
+        android:label="MedicineFragment" >
+        <action
+            android:id="@+id/action_medicineFragment_to_menuChildrenFragment"
+            app:destination="@id/menuChildFragment" />
+    </fragment>
+
+
+</navigation>
