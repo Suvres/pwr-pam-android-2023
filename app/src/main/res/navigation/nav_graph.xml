@@ -26,6 +26,9 @@
         <action
             android:id="@+id/action_menuCaregiverFragment_to_locationChildrenFragment"
             app:destination="@id/locationChildrenFragment" />
+        <action
+            android:id="@+id/action_menuCaregiverFragment_to_toDoDialogFragment"
+            app:destination="@id/toDoDialogFragment" />
 
     </fragment>
     <fragment
@@ -35,7 +38,7 @@
         tools:layout="@layout/fragment_todo_caregiver" />
     <fragment
         android:id="@+id/childrenFragment"
-        android:name="com.example.myapplication.fragments.ChildFragment"
+        android:name="com.example.myapplication.fragments.ChildrenFragment"
         android:label="fragment_children"
         tools:layout="@layout/fragment_children" />
     <fragment
@@ -67,6 +70,12 @@
         <action
             android:id="@+id/action_blankMenuFragment_to_menuchildFragment"
             app:destination="@id/menuChildFragment" />
+        <action
+            android:id="@+id/action_blankMenuFragment_to_toDoDialogFragment"
+            app:destination="@id/toDoDialogFragment" />
+        <action
+            android:id="@+id/action_blankMenuFragment_to_childrenFragment"
+            app:destination="@id/childrenFragment" />
     </fragment>
     <fragment
         android:id="@+id/fingerTapping"
@@ -107,7 +116,7 @@
     <fragment
         android:id="@+id/childrenTasksStatusFragment"
         android:name="com.example.myapplication.fragments.ChildTasksStatusFragment"
-        android:label="fragment_children_tasks_status"
+        android:label="fragment_child_tasks_status"
         tools:layout="@layout/fragment_children_tasks_status" >
         <action
             android:id="@+id/action_childrenTasksStatusFragment_to_menuCaregiverFragment"
@@ -130,6 +139,15 @@
             android:id="@+id/action_medicineFragment_to_menuChildrenFragment"
             app:destination="@id/menuChildFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/toDoDialogFragment"
+        android:name="com.example.myapplication.fragments.ToDoDialogFragment"
+        android:label="fragment_to_do_dialog"
+        tools:layout="@layout/fragment_to_do_dialog" >
+        <action
+            android:id="@+id/action_toDoDialogFragment_to_menuCaregiverFragment"
+            app:destination="@id/menuCaregiverFragment" />
+    </dialog>
 
 
 </navigation>

@@ -44,9 +44,9 @@
         android:layout_height="wrap_content"
         tools:listitem="@layout/list_task_status" />
 
-</LinearLayout>
+    </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+</androidx.cardview.widget.CardView>
 
 
 

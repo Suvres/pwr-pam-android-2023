@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/cut_card_background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.ChildFragment"
+    tools:context=".fragments.ChildrenFragment"
     android:orientation="vertical">
 
         <LinearLayout

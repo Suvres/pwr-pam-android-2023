@@ -1,6 +1,14 @@
 package com.example.myapplication.fragments
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Person
+import android.content.Context
 import android.content.Intent
+import android.content.pm.ShortcutInfo
+import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.users.TasksRepository
 import com.example.myapplication.users.UserRepository
@@ -22,6 +31,7 @@ import kotlinx.android.synthetic.main.fragment_menu_child.idChildren
 class MenuChildFragment : Fragment() {
     private var taskRepository = TasksRepository()
     private var userRepository = UserRepository()
+    private var NOTIFICATION_CHANNEL_ID = "CHANNEL_BUBBLE_ID"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -14,7 +14,7 @@ import com.example.myapplication.users.UserRepository
 import com.example.myapplication.utils.adapter.ChildrenAdapter
 import kotlinx.android.synthetic.main.fragment_children.countChildren
 
-class ChildFragment : Fragment() {
+class ChildrenFragment : Fragment() {
 
     private val userRepository = UserRepository()
     private lateinit var binding: FragmentChildrenBinding

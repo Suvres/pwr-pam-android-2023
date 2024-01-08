@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_menu_parent.addChild
 import kotlinx.android.synthetic.main.fragment_menu_parent.findChild
 import kotlinx.android.synthetic.main.fragment_menu_parent.idCaregiver
 import kotlinx.android.synthetic.main.fragment_menu_parent.statusTasks
+import java.util.Optional
 
 class MenuParentFragment : Fragment() {
 
@@ -41,7 +42,9 @@ class MenuParentFragment : Fragment() {
         }
 
         userRepository.getCurrentUserMustExist {
-            idCaregiver.text = String.format("Witaj: %s %s", it.firstName, it.lastName)
+            Optional.ofNullable(idCaregiver).ifPresent(){caregiver ->
+                caregiver.text = String.format("Witaj: %s %s", it.firstName, it.lastName)
+            }
         }
 
     }

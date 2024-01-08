@@ -6,17 +6,21 @@ import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender.SendIntentException
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.app.ActivityCompat
@@ -24,13 +28,20 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
-import com.example.myapplication.fragments.ChildFragment
-import com.example.myapplication.fragments.MenuParentFragment
-import com.example.myapplication.fragments.ToDoCaregiverFragment
 import com.example.myapplication.log.LoginActivity
 import com.example.myapplication.users.*
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
+import com.google.android.gms.location.LocationSettingsStatusCodes
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.*
@@ -49,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private val locationRepository = LocationRepository()
     private val taskRepository = TasksRepository()
+    private lateinit var locationRequest: LocationRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,9 +75,12 @@ class MainActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         configureBottomNavigation()
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         createNotificationChannel()
 
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(2000);
 
     }
 
@@ -98,7 +113,7 @@ class MainActivity : AppCompatActivity() {
                 executorService.scheduleAtFixedRate({
                     getLocation(uid = UserRepository.auth.currentUser!!.uid)
                     Log.d("ZAPIS LOKALIZACJI", "minęło 10min")
-                }, 0, 10, TimeUnit.MINUTES)
+                }, 0, 10, TimeUnit.SECONDS)
 
                 this.nav_host_fragment.findNavController()
                    .navigate(R.id.action_blankMenuFragment_to_menuchildFragment)
@@ -135,21 +150,18 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.show(2, true)
 
         bottomNavigation.setOnClickMenuListener {
-            var fragment: Fragment = MenuParentFragment()
             when(it.id) {
                 1-> {
-                    fragment = ChildFragment()
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.childrenFragment)
                 }
                 2 -> {
-                    fragment = MenuParentFragment()
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.menuCaregiverFragment)
                 }
                 3 -> {
-                    fragment = ToDoCaregiverFragment()
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.toDoCaregiver)
                 }
             }
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, fragment)
-                .commit()
+
         }
 
     }
@@ -210,20 +222,11 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission", "SetTextI18n")
     private fun getLocation(uid: String) {
         if (checkPermissions()) {
-            if (isLocationEnabled()) {
-                mFusedLocationClient.lastLocation.addOnCompleteListener { task ->
-                    val location: Location? = task.result
-                    if (location != null) {
-                        val geocoder = Geocoder(this, Locale.getDefault())
-                        val list = geocoder.getFromLocation(location.latitude, location.longitude, 1)!!
-                        val l = com.example.myapplication.users.LocationUser(latitude = list[0].latitude, longitude = list[0].longitude, user = uid)
-                        locationRepository.save(l)
-                    }
-                }
-            } else {
-                Toast.makeText(this, "Please turn on location", Toast.LENGTH_LONG).show()
-                val intent = Intent(ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
+            if (isGPSEnabled()) {
+                getCurrentLocation(uid);
+
+            }else {
+                turnOnGPS();
             }
         } else {
             requestPermissions()
@@ -277,5 +280,74 @@ class MainActivity : AppCompatActivity() {
         channel.description = desc
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
+    }
+
+
+    private fun getCurrentLocation(uid: String) {
+        if (ActivityCompat.checkSelfPermission(
+                this@MainActivity,
+                ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            if (isGPSEnabled()) {
+                LocationServices.getFusedLocationProviderClient(this@MainActivity)
+                    .requestLocationUpdates(locationRequest!!, object : LocationCallback() {
+                        override fun onLocationResult(@NonNull locationResult: LocationResult) {
+                            super.onLocationResult(locationResult)
+                            LocationServices.getFusedLocationProviderClient(this@MainActivity)
+                                .removeLocationUpdates(this)
+                            if (locationResult != null && locationResult.locations.size > 0) {
+                                val index = locationResult.locations.size - 1
+                                val latitude = locationResult.locations[index].latitude
+                                val longitude = locationResult.locations[index].longitude
+                                locationRepository.save(LocationUser(longitude, latitude, uid))
+                                Log.d("Location", "Latitude: $latitude\nLongitude: $longitude")
+                            }
+                        }
+                    }, Looper.getMainLooper())
+            } else {
+                turnOnGPS()
+            }
+        } else {
+            requestPermissions(arrayOf(ACCESS_FINE_LOCATION), 1)
+        }
+    }
+
+    private fun turnOnGPS() {
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest!!)
+        builder.setAlwaysShow(true)
+        val result: Task<LocationSettingsResponse> = LocationServices.getSettingsClient(
+            applicationContext
+        )
+            .checkLocationSettings(builder.build())
+        result.addOnCompleteListener { task ->
+            try {
+                val response: LocationSettingsResponse =
+                    task.getResult(ApiException::class.java)!!
+                Toast.makeText(this@MainActivity, "GPS is already tured on", Toast.LENGTH_SHORT)
+                    .show()
+            } catch (e: ApiException) {
+                when (e.statusCode) {
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
+                        val resolvableApiException = e as ResolvableApiException
+                        resolvableApiException.startResolutionForResult(this@MainActivity, 2)
+                    } catch (ex: SendIntentException) {
+                        ex.printStackTrace()
+                    }
+
+                    LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {}
+                }
+            }
+        }
+    }
+    private fun isGPSEnabled(): Boolean {
+        var locationManager: LocationManager? = null
+        var isEnabled = false
+        if (locationManager == null) {
+            locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        }
+        isEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        return isEnabled
     }
 }

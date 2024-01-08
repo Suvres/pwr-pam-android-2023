@@ -21,7 +21,7 @@ class ChildTasksStatusFragment : Fragment(),
     private lateinit var childrenTasksStatusAdapter: TaskStatusAdapter
     private lateinit var statusList: MutableList<UserTask>
 
-    private val TAG = "ChildrenTasksStatusFragment"
+    private val TAG = "ChildTasksStatusFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
